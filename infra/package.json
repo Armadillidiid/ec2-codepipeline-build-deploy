@@ -1,0 +1,19 @@
+{
+  "name": "@repo/infra",
+  "version": "0.1.1",
+  "type": "module",
+  "bin": {
+    "infra": "bin/infra.js"
+  },
+  "scripts": {
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@types/node": "22.7.9",
+    "aws-cdk": "2.1027.0"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "2.211.0",
+    "constructs": "^10.0.0"
+  }
+}

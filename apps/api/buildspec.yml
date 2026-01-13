@@ -1,0 +1,33 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo "Nothing to install. Skipping..."
+
+  pre_build:
+    commands:
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${IMAGE_TAG:-$COMMIT_HASH}
+
+  build:
+    commands:
+      - docker build -f apps/api/Dockerfile -t $REPOSITORY_URI:latest -t $REPOSITORY_URI:$IMAGE_TAG .
+
+  post_build:
+    commands:
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - cp apps/api/docker-compose.prod.yml.template apps/api/docker-compose.prod.yml
+      - sed -i "s|REPOSITORY_URI|${REPOSITORY_URI}|g" apps/api/docker-compose.prod.yml
+      - sed -i "s|IMAGE_TAG|${IMAGE_TAG}|g" apps/api/docker-compose.prod.yml
+      # Create .env.infra with infrastructure values
+      - echo "AWS_REGION=${AWS_DEFAULT_REGION}" > apps/api/.env.infra
+      - echo "ECR_REPOSITORY=${REPOSITORY_URI}" >> apps/api/.env.infra
+
+artifacts:
+  files:
+    - apps/api/**/*
+  discard-paths: no
