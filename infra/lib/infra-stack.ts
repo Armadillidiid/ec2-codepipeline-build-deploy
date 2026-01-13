@@ -13,14 +13,8 @@ export class InfraStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: InfraStackProps = {}) {
     super(scope, id, props);
 
-    const backendStack = new BackendStack(this, "Backend", {
+    const _backendStack = new BackendStack(this, "Backend", {
       env: props?.env,
-    });
-
-    // Cross-stack outputs
-    new cdk.CfnOutput(this, "ApiEndpoint", {
-      value: `http://${backendStack.instance.instancePublicIp}:3000`,
-      description: "API Endpoint URL",
     });
   }
 }

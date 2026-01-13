@@ -286,55 +286,46 @@ export class BackendStack extends cdk.Stack {
     new cdk.CfnOutput(this, "InstancePublicIP", {
       value: this.instance.instancePublicIp,
       description: "Public IP of the EC2 instance",
-      exportName: "InstancePublicIP",
     });
 
     new cdk.CfnOutput(this, "InstanceId", {
       value: this.instance.instanceId,
       description: "EC2 Instance ID",
-      exportName: "InstanceId",
     });
 
     new cdk.CfnOutput(this, "ApiUrl", {
       value: `http://${this.instance.instancePublicIp}:3000`,
       description: "API URL (access your app here)",
-      exportName: "ApiUrl",
     });
 
     new cdk.CfnOutput(this, "ECRRepositoryURI", {
       value: this.ecrRepository.repositoryUri,
       description: "ECR Repository URI",
-      exportName: "ECRRepositoryURI",
     });
 
     new cdk.CfnOutput(this, "CodeBuildProjectName", {
       value: this.codeBuildProject.projectName,
       description: "CodeBuild Project Name",
-      exportName: "CodeBuildProjectName",
     });
 
     new cdk.CfnOutput(this, "CodeDeployApplicationName", {
       value: this.codeDeployApplication.applicationName,
       description: "CodeDeploy Application Name",
-      exportName: "CodeDeployApplicationName",
     });
 
     new cdk.CfnOutput(this, "CodeDeployDeploymentGroupName", {
       value: this.codeDeployDeploymentGroup.deploymentGroupName,
       description: "CodeDeploy Deployment Group Name",
-      exportName: "CodeDeployDeploymentGroupName",
     });
 
     new cdk.CfnOutput(this, "PipelineName", {
       value: this.pipeline.pipelineName,
       description: "API CodePipeline Name",
-      exportName: "ApiPipelineName",
     });
 
     new cdk.CfnOutput(this, "PipelineArn", {
       value: this.pipeline.pipelineArn,
       description: "API CodePipeline ARN",
-      exportName: "ApiPipelineArn",
     });
   }
 }
