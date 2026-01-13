@@ -4,7 +4,7 @@ set -e
 echo "Running after install tasks..."
 
 # Navigate to application directory
-cd /var/app/current/apps/api
+cd /var/app/current
 
 # Ensure scripts are executable
 chmod +x scripts/*.sh

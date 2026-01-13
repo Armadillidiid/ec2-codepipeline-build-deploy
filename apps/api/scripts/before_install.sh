@@ -8,7 +8,7 @@ mkdir -p /var/app/current
 mkdir -p /var/app/previous
 
 # Backup previous deployment
-if [ -d "/var/app/current/apps" ]; then
+if [ -d "/var/app/current" ] && [ "$(ls -A /var/app/current)" ]; then
 	echo "Backing up previous deployment..."
 	rm -rf /var/app/previous/*
 	cp -r /var/app/current/* /var/app/previous/ || true

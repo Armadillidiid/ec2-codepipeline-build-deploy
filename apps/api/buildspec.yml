@@ -23,11 +23,10 @@ phases:
       - cp apps/api/docker-compose.prod.yml.template apps/api/docker-compose.prod.yml
       - sed -i "s|REPOSITORY_URI|${REPOSITORY_URI}|g" apps/api/docker-compose.prod.yml
       - sed -i "s|IMAGE_TAG|${IMAGE_TAG}|g" apps/api/docker-compose.prod.yml
-      # Create .env.infra with infrastructure values
       - echo "AWS_REGION=${AWS_DEFAULT_REGION}" > apps/api/.env.infra
       - echo "ECR_REPOSITORY=${REPOSITORY_URI}" >> apps/api/.env.infra
 
 artifacts:
+  base-directory: apps/api
   files:
-    - apps/api/**/*
-  discard-paths: no
+    - '**/*'

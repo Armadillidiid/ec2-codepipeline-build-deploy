@@ -8,7 +8,7 @@ ENV_NAME=${ENVIRONMENT:-prod}
 APP_NAME=${APP_NAME:-ec2-codepipeline-build-deploy}
 
 # Target .env file location
-ENV_FILE="/var/app/current/apps/api/.env"
+ENV_FILE="/var/app/current/.env"
 
 # Create directory if it doesn't exist
 mkdir -p "$(dirname "$ENV_FILE")"

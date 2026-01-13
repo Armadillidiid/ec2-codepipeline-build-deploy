@@ -4,7 +4,7 @@ set -e
 echo "Starting application..."
 
 # Navigate to application directory
-cd /var/app/current/apps/api
+cd /var/app/current
 
 # Verify .env file exists (created by setup_env.sh)
 if [ ! -f .env ]; then

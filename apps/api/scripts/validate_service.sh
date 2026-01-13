@@ -4,7 +4,7 @@ set -e
 echo "Validating service..."
 
 # Navigate to application directory
-cd /var/app/current/apps/api
+cd /var/app/current
 
 COMPOSE_FILE=docker-compose.prod.yml
 

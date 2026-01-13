@@ -4,7 +4,7 @@ set -e
 echo "Stopping application..."
 
 # Navigate to application directory
-cd /var/app/current/apps/api || exit 0
+cd /var/app/current || exit 0
 
 # Stop docker-compose services if they exist
 if [ -f docker-compose.prod.yml ]; then
