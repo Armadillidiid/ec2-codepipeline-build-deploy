@@ -1,8 +1,8 @@
 version: 0.0
 os: linux
 files:
-  - source: /
-    destination: /var/app/current
+  - source: /apps/api
+    destination: /var/app/current/apps/api
 hooks:
   ApplicationStop:
     - location: scripts/stop_application.sh

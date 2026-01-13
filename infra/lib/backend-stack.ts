@@ -56,6 +56,12 @@ export class BackendStack extends cdk.Stack {
       "Allow HTTPS traffic",
     );
 
+    ec2SecurityGroup.addIngressRule(
+      ec2.Peer.anyIpv4(),
+      ec2.Port.tcp(22),
+      "Allow SSH access",
+    );
+
     // IAM Role for EC2 instance
     const ec2Role = new iam.Role(this, "Ec2InstanceRole", {
       assumedBy: new iam.ServicePrincipal("ec2.amazonaws.com"),
@@ -101,14 +107,13 @@ export class BackendStack extends cdk.Stack {
     // User data script to install Docker, Docker Compose, and CodeDeploy Agent
     const userData = ec2.UserData.forLinux();
     userData.addCommands(
-      "#!/bin/bash",
-      "set -e",
+      "set -ex",
       "",
       "# Update system",
-      "yum update -y",
+      "dnf update -y",
       "",
       "# Install Docker",
-      "yum install -y docker",
+      "dnf install -y docker",
       "systemctl start docker",
       "systemctl enable docker",
       "usermod -a -G docker ec2-user",
@@ -119,7 +124,7 @@ export class BackendStack extends cdk.Stack {
       "ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose",
       "",
       "# Install CodeDeploy Agent",
-      "yum install -y ruby wget",
+      "dnf install -y ruby wget",
       "cd /home/ec2-user",
       `wget https://aws-codedeploy-${this.region}.s3.${this.region}.amazonaws.com/latest/install`,
       "chmod +x ./install",
@@ -218,7 +223,10 @@ export class BackendStack extends cdk.Stack {
     );
 
     // Add custom tags to instance for CodeDeploy targeting
-    cdk.Tags.of(this.instance).add("Application", "ec2-codepipeline-build-deploy");
+    cdk.Tags.of(this.instance).add(
+      "Application",
+      "ec2-codepipeline-build-deploy",
+    );
     cdk.Tags.of(this.instance).add("Environment", "prod");
 
     // CodePipeline Setup
