@@ -209,18 +209,17 @@ export class BackendStack extends cdk.Stack {
       {
         application: this.codeDeployApplication,
         ec2InstanceTags: new codedeploy.InstanceTagSet({
-          "aws:cloudformation:stack-name": [this.stackName],
+          Application: ["ec2-codepipeline-build-deploy"],
+          Environment: ["prod"],
         }),
         installAgent: false, // We installed it manually in user data
         deploymentConfig: codedeploy.ServerDeploymentConfig.ALL_AT_ONCE,
       },
     );
 
-    // Add CloudFormation tags to instance for CodeDeploy
-    cdk.Tags.of(this.instance).add(
-      "aws:cloudformation:stack-name",
-      this.stackName,
-    );
+    // Add custom tags to instance for CodeDeploy targeting
+    cdk.Tags.of(this.instance).add("Application", "ec2-codepipeline-build-deploy");
+    cdk.Tags.of(this.instance).add("Environment", "prod");
 
     // CodePipeline Setup
     // S3 bucket for pipeline artifacts
