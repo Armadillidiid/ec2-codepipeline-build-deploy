@@ -138,7 +138,7 @@ export class BackendStack extends cdk.Stack {
       vpc: this.vpc,
       instanceType: ec2.InstanceType.of(
         ec2.InstanceClass.T3,
-        ec2.InstanceSize.SMALL,
+        ec2.InstanceSize.MICRO,
       ),
       machineImage: ec2.MachineImage.latestAmazonLinux2023(),
       role: ec2Role,
@@ -245,7 +245,7 @@ export class BackendStack extends cdk.Stack {
       new codepipeline_actions.CodeStarConnectionsSourceAction({
         actionName: "GitHub_Source",
         owner: "Armadillidiid",
-        repo: "ec2-pipeline-build-deploy",
+        repo: "ec2-codepipeline-build-deploy",
         branch: "main",
         output: sourceOutput,
         connectionArn:
