@@ -37,8 +37,8 @@ if [ -f docker-compose.prod.yml ]; then
 	docker-compose -f docker-compose.prod.yml pull
 fi
 
-# Clean up old Docker images to save space (keep last 3 versions)
-echo "Cleaning up old Docker images..."
-docker image prune -af --filter "until=72h" || true
+# Clean up dangling images
+echo "Cleaning up dangling Docker images..."
+docker image prune -f || true
 
 echo "After install completed successfully"
