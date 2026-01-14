@@ -33,6 +33,20 @@ export class BackendStack extends cdk.Stack {
     this.ecrRepository = new ecr.Repository(this, "ApiRepository", {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       imageTagMutability: ecr.TagMutability.MUTABLE,
+      lifecycleRules: [
+        {
+          description: "Delete untagged images immediately",
+          rulePriority: 1,
+          tagStatus: ecr.TagStatus.UNTAGGED,
+          maxImageCount: 1,
+        },
+        {
+          description: "Keep only last 3 images",
+          rulePriority: 2,
+          tagStatus: ecr.TagStatus.ANY,
+          maxImageCount: 3,
+        },
+      ],
     });
 
     // Security Group for EC2 Instance
@@ -159,14 +173,6 @@ export class BackendStack extends cdk.Stack {
     // Create SSM Parameters for application environment variables
     const appName = "ec2-codepipeline-build-deploy";
     const envName = "prod";
-
-    // Deployment version parameter
-    new ssm.StringParameter(this, "ApiDeploymentVersion", {
-      parameterName: `/${appName}/${envName}/DEPLOYMENT_VERSION`,
-      stringValue: "1.0.0",
-      description: "Current deployment version of the API",
-      tier: ssm.ParameterTier.STANDARD,
-    });
 
     // Feature flag parameter
     new ssm.StringParameter(this, "ApiFeatureFlag", {
