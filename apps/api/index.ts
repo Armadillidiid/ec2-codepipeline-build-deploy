@@ -30,6 +30,7 @@ const server = createServer((req, res) => {
     const featureHealthDetails =
       process.env.FEATURE_HEALTH_DETAILS || "disabled";
 
+    // This is a new change
     const healthResponse: any = {
       status: "healthy",
       timestamp: new Date().toISOString(),
